@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Api\v1\Auth\LoginController;
 use App\Http\Controllers\Api\v1\Auth\SignUpController;
+use App\Http\Controllers\Api\v1\Level\LevelController;
+use App\Http\Controllers\Api\v1\Score\ScoreController;
 use App\Http\Controllers\Api\v1\ToDo\ToDoController;
 use App\Http\Controllers\Api\v1\User\UserController;
 use Illuminate\Http\Request;
@@ -52,6 +54,21 @@ Route::group(['prefix' => 'v1'], function () {
             Route::post('addToDo',[ToDoController::class,'store']);
             Route::post('updateToDo',[ToDoController::class,'update']);
             Route::post('deleteToDo',[ToDoController::class,'destroy']);
+        });
+    });
+
+    Route::group(['prefix' => 'game'],function (){
+
+        Route::group(['middleware' =>'auth:sanctum'],function (){
+            Route::get('getLevel/{id}', [LevelController::class, 'getLevel']);
+            Route::post('store', [LevelController::class, 'store']);
+            Route::put('update', [LevelController::class, 'update']);
+        });
+
+        Route::group(['middleware' =>'auth:sanctum'],function (){
+            Route::get('getScore/{id}', [ScoreController::class, 'getScore']);
+            Route::post('store', [ScoreController::class, 'store']);
+            Route::put('update', [ScoreController::class, 'update']);
         });
     });
 
