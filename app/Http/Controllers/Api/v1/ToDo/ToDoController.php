@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\ToDo;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -100,7 +101,8 @@ class ToDoController extends Controller
                     'body' => $request->get('body'),
                     'note' => $request->get('note'),
                     'status' => $request->get('status'),
-
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now(),
                 ]
             );
 
@@ -135,6 +137,7 @@ class ToDoController extends Controller
                     'body' => $request->get('body'),
                     'note' => $request->get('note'),
                     'status' => $request->get('status'),
+                    'updated_at' => Carbon::now(),
 
                 ]
             );
