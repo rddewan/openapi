@@ -117,14 +117,22 @@ class ToDoController extends Controller
             'status' => 'required'
         ]);
 
-        $data =  DB::table('to_dos')->where('id', '=', $request->get('id'))->first();
+        DB::table('to_dos')
+            ->where('id', '=', $request->get('id'))
+            ->update(
+                [
+                    'user_id' => $request->get('user_id'),
+                    'title' => $request->get('title'),
+                    'body' => $request->get('body'),
+                    'note' => $request->get('note'),
+                    'status' => $request->get('status'),
 
-        $data->user_id = $request->get('user_id');
-        $data->title = $request->get('title');
-        $data->body = $request->get('body');
-        $data->note = $request->get('note');
-        $data->status = $request->get('status');
-        $data->save();
+                ]
+            );
+
+        $data = DB::table('to_dos')
+            ->where('id', '=', $request->get('id'))
+            ->first();
 
         return Response()->json($data, Response::HTTP_CREATED);
     }
@@ -132,7 +140,7 @@ class ToDoController extends Controller
     /*
      * delete task by id
      */
-    public function destroy(Request $request): \Illuminate\Http\JsonResponse
+    public function destroy(Request $request): JsonResponse
     {
 
         $task =  DB::table('to_dos')->where('id', '=', $request->get('id'))->first();
@@ -140,9 +148,12 @@ class ToDoController extends Controller
         if (!empty($task)) {
 
             if ($task->user_id == $request->get('user_id')) {
-                $task->delete();
+                $result = DB::table('to_dos')
+                    ->where('id', '=', $request->get('id'))
+                    ->where('user_id', '=', $request->get('user_id'))
+                    ->delete();
 
-                return Response()->json($task, Response::HTTP_OK);
+                return Response()->json(['deleted' => $result != 0], Response::HTTP_OK);
             }
 
             return response()->json(
@@ -154,7 +165,7 @@ class ToDoController extends Controller
 
         return response()->json(
             [
-                'error' => 'Task does not exist.'
+                'error' => 'Task does not exist.',
             ], Response::HTTP_NOT_FOUND);
 
     }

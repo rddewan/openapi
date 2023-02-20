@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('title',25);
             $table->text('body');
             $table->string('note',100)->default('');
-            $table->string('status',25);
+            $table->boolean('status');
             $table->timestamps();
         });
     }

@@ -45,15 +45,27 @@ Route::group(['prefix' => 'v1'], function () {
 
     Route::group(['prefix' => 'todo'],function (){
 
-        Route::group(['middleware' =>'auth:sanctum'],function (){
-            Route::get('getToDos/{id}',[ToDoController::class,'getToDos']);
-            Route::get('getToDoList/{id}',[ToDoController::class,'getToDoList']);
-            Route::get('getToDo/{id}',[ToDoController::class,'getToDo']);
+        Route::get('getToDos/{id}',[ToDoController::class,'getToDos']);
+        Route::get('getToDoList/{id}',[ToDoController::class,'getToDoList']);
+        Route::get('getToDo/{id}',[ToDoController::class,'getToDo']);
 
 
-            Route::post('addToDo',[ToDoController::class,'store']);
-            Route::post('updateToDo',[ToDoController::class,'update']);
-            Route::post('deleteToDo',[ToDoController::class,'destroy']);
+        Route::post('addToDo',[ToDoController::class,'store']);
+        Route::put('updateToDo',[ToDoController::class,'update']);
+        Route::delete('deleteToDo',[ToDoController::class,'destroy']);
+
+        Route::group(['prefix' =>'auth'],function (){
+
+            Route::group(['middleware' =>'auth:sanctum'],function (){
+                Route::get('getToDos/{id}',[ToDoController::class,'getToDos']);
+                Route::get('getToDoList/{id}',[ToDoController::class,'getToDoList']);
+                Route::get('getToDo/{id}',[ToDoController::class,'getToDo']);
+
+
+                Route::post('addToDo',[ToDoController::class,'store']);
+                Route::post('updateToDo',[ToDoController::class,'update']);
+                Route::post('deleteToDo',[ToDoController::class,'destroy']);
+            });
         });
     });
 
