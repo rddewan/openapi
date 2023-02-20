@@ -91,13 +91,22 @@ class ToDoController extends Controller
             'status' => 'required'
         ]);
 
-        $data = new ToDo();
-        $data->user_id = $request->get('user_id');
-        $data->title = $request->get('title');
-        $data->body = $request->get('body');
-        $data->note = $request->get('note');
-        $data->status = $request->get('status');
-        $data->save();
+        $id = DB::table('to_dos')
+            ->where('id', '=', $request->get('id'))
+            ->insertGetId(
+                [
+                    'user_id' => $request->get('user_id'),
+                    'title' => $request->get('title'),
+                    'body' => $request->get('body'),
+                    'note' => $request->get('note'),
+                    'status' => $request->get('status'),
+
+                ]
+            );
+
+        $data = DB::table('to_dos')
+            ->where('id', '=', $id)
+            ->first();
 
         return Response()->json($data, Response::HTTP_CREATED);
 
