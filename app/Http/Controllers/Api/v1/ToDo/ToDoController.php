@@ -146,7 +146,7 @@ class ToDoController extends Controller
             ->where('id', '=', $request->get('id'))
             ->first();
 
-        return Response()->json($data, Response::HTTP_CREATED);
+        return Response()->json($data, Response::HTTP_ACCEPTED);
     }
 
     /*
