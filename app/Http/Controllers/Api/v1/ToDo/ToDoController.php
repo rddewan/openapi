@@ -56,7 +56,7 @@ class ToDoController extends Controller
     public function getToDo($id): JsonResponse
     {
         $data = DB::table('to_dos')
-            ->where('id', '>', $id)
+            ->where('id', '=', $id)
             ->first();
 
         return Response()->json($data, Response::HTTP_OK);
