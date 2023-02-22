@@ -46,7 +46,7 @@ Route::group(['prefix' => 'v1'], function () {
     Route::group(['prefix' => 'todo'],function (){
 
         Route::get('getToDos/{id}',[ToDoController::class,'getToDos']);
-        Route::get('getToDoList/{id}',[ToDoController::class,'getToDoList']);
+        Route::get('getToDoList',[ToDoController::class,'getToDoList']);
         Route::get('getToDo/{id}',[ToDoController::class,'getToDo']);
 
 
