@@ -32,14 +32,14 @@ class ToDoController extends Controller
         $pageNumber = $request->get('pageNumber');
 
         if ($perPage == null || $pageNumber == null)  {
-            return \Illuminate\Support\Facades\Response::json(
+            return Response()->json(
                 ["message"=>"Request param is missing"],
                 ResponseAlias::HTTP_BAD_REQUEST
             );
         }
 
         $data = DB::table('to_dos')
-            ->where('user_id',$id)
+            ->where('user_id', $request->get('user_id'))
             ->orderBy('id', 'desc')
             ->paginate($perPage,['*'],'todo',$pageNumber);
 
