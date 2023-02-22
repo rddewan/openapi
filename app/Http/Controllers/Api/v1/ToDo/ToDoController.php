@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class ToDoController extends Controller
 {
@@ -25,12 +26,22 @@ class ToDoController extends Controller
         return Response()->json($data, Response::HTTP_OK);
     }
 
-    public function getToDoList($id): JsonResponse
+    public function getToDoList(Request $request): JsonResponse
     {
+        $perPage = $request->get('perPage');
+        $pageNumber = $request->get('pageNumber');
+
+        if ($perPage == null || $pageNumber == null)  {
+            return \Illuminate\Support\Facades\Response::json(
+                ["message"=>"Request param is missing"],
+                ResponseAlias::HTTP_BAD_REQUEST
+            );
+        }
+
         $data = DB::table('to_dos')
             ->where('user_id',$id)
             ->orderBy('id', 'desc')
-            ->get();
+            ->paginate($perPage,['*'],'todo',$pageNumber);
 
         return Response()->json($data, Response::HTTP_OK);
     }
